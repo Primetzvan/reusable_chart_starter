@@ -11,11 +11,13 @@ export class LineChartComponent implements OnInit {
   }
 
   // TODO
+  @Input() def!: ChartDef;
+  @Input() height!: number;
+  @Input() width!: number;
 
   public ngOnInit(): void {
     // TODO
   }
-
 }
 
 export class ChartDef {
@@ -32,7 +34,6 @@ export class ChartDef {
   private validate(): boolean {
     return !(this.points === null || this.points.length < 2);
   }
-
 }
 
 export interface IPoint {

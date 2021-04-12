@@ -6,6 +6,7 @@ import {ChartDef} from './line-chart/line-chart.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
   public title = 'reusable-chart';
   public def1: ChartDef;

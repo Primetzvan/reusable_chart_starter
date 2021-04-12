@@ -1,1 +1,27 @@
-TODO
+<svg class="graph" aria-labelledby="title" role="img" [attr.width]="width" [attr.height]="height">
+  <title>{{def.title}}</title>
+  <text id="title" x="50%" [attr.y]="10" alignment-baseline="middle" text-anchor="middle">{{def.title}}</text>
+  <g class="grid y-grid" id="yGrid">
+    <line x1="20" x2="20" [attr.y1]="25" [attr.y2]="height"></line>
+  </g>
+  <g class="grid x-grid" id="xGrid">
+    <line x1="20" [attr.x2]="width" [attr.y1]="25" [attr.y2]="25"></line>
+  </g>
+
+  <g class="grid helpline-grid">
+    <line x1="40" [attr.x2]="width - 30" ></line>
+  </g>
+
+
+  <g class="labels x-labels">
+    <text x="40" [attr.y]="height-10" >{{def.points[0].xValue | number :'1.0-0'}}</text>
+    <text [attr.x]="width-20" [attr.y]="height-10">{{def.points[def.points.length-1].xValue | number :'1.0-0'}}</text>
+    <text x="50%" alignment-baseline="middle" text-anchor="middle" [attr.y]="height-10" class="label-title">{{def.xAxisLabel}}</text>
+  </g>
+
+  <g class="labels y-labels">
+    <text x="10" [attr.y]="height/2" [attr.writing-mode]="'tb'" class="label-title">{{def.yAxisLabel}}</text>
+  </g>
+
+  <polyline fill="none" stroke="#0074d9" stroke-width="3"/>
+</svg>
