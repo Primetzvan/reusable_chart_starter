@@ -1,5 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 
+class ICoordinateSystem {
+  labelY: number | undefined;
+  pixelHeightY: number | undefined;
+}
+
 @Component({
   selector: 'app-line-chart',
   templateUrl: './line-chart.component.html',
@@ -15,8 +20,31 @@ export class LineChartComponent implements OnInit {
   @Input() height!: number;
   @Input() width!: number;
 
+  coordinateSystem!: ICoordinateSystem[];
+  rotate = '';
+  points = '';
+
   public ngOnInit(): void {
     // TODO
+    if (this.def.isValid) {
+      this.coordinateSystem = [];
+      this.fillAuxilaryPoints();
+      this.rotate = 'matrix(1 0 0 -1 0 ' + this.height + ')';
+    }
+  }
+
+  public fillAuxilaryPoints(): void {
+    this.def.points.sort((a, b) => (a.yValue > b.yValue) ? 1 : ((b.yValue > a.yValue) ? -1 : 0));
+
+    const divider = (this.def.points[this.def.points.length - 1].yValue - this.def.points[0].yValue) / 4;
+    const startVal: number = this.def.points[0].yValue;
+    for (let i = 0; i < 5; i++) {
+      this.coordinateSystem.push({
+        labelY: Math.round(divider * Math.abs(i - 5) + startVal), pixelHeightY:
+          Math.round((this.height - 60) / 4 * (i - 1) + 30)
+      });
+    }
+    this.coordinateSystem.push({labelY: Math.round(startVal), pixelHeightY: Math.round((this.height - 60) / 4 * 4 + 30)});
   }
 }
 
