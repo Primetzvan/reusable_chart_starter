@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 class ICoordinateSystem {
-  labelY: number | undefined;
-  pixelHeightY: number | undefined;
+  labelY!: number;
+  pixelHeightY!: number;
 }
 
 @Component({
@@ -30,6 +30,8 @@ export class LineChartComponent implements OnInit {
       this.coordinateSystem = [];
       this.fillAuxilaryPoints();
       this.rotate = 'matrix(1 0 0 -1 0 ' + this.height + ')';
+      this.def.points.sort((a, b) => (a.xValue > b.xValue) ? 1 : ((b.xValue > a.xValue) ? -1 : 0));
+      this.calculatePoints();
     }
   }
 
@@ -45,6 +47,26 @@ export class LineChartComponent implements OnInit {
       });
     }
     this.coordinateSystem.push({labelY: Math.round(startVal), pixelHeightY: Math.round((this.height - 60) / 4 * 4 + 30)});
+  }
+
+  public calculatePoints(): void
+  {
+    const givenXRange = (this.def.points[this.def.points.length - 1].xValue - this.def.points[0].xValue); // given max - given min
+    const xPixelInGraphRange = ((this.width - 30) - 40); // pixel max - pixel min
+
+    const givenYRange =
+      (this.coordinateSystem[0].labelY - this.coordinateSystem[this.coordinateSystem.length - 1].labelY); // given max - given min
+    const yPixelInGraphRange = ((this.height - 30) - 30); // pixel max - pixel min
+
+    for (const point of this.def.points)
+    {
+      const xPixelValue = (((point.xValue - this.def.points[0].xValue) * xPixelInGraphRange) / givenXRange) + 40;
+      this.points = this.points + Math.round(xPixelValue) + ',';
+
+      const yPixelValue =
+        (((point.yValue - (this.coordinateSystem[this.coordinateSystem.length - 1].labelY )) * yPixelInGraphRange) / givenYRange) + 30;
+      this.points = this.points + Math.round(yPixelValue) + ' ';
+    }
   }
 }
 
